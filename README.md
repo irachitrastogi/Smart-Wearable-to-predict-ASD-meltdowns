@@ -1,1 +1,1 @@
-# Smart-Wearable-to-predict-ASD-meltdowns
+# Smart Wearable to predict ASD meltdowns
