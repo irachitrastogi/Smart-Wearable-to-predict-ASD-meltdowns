@@ -1,0 +1,330 @@
+<html>
+<head>
+<title>Internet of Things App</title>
+<!--<link rel = "icon" type = "image/jpg" href = "./css/city_vector.jpg">-->
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.3.0/firebase-app.js"></script>
+
+<script src="https://smtpjs.com/v3/smtp.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.3.0/firebase-analytics.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.3.0/firebase-database.js"></script>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+	
+	<!-- stylesheet -->
+	<link rel="stylesheet" type="text/css" href="./css/style.css"> 
+<!--
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyBjvM1Vb6OBkgkXXswpWCVNwa7NWiIuYLY",
+    authDomain: "urbancomputingass1.firebaseapp.com",
+    databaseURL: "https://urbancomputingass1.firebaseio.com",
+    projectId: "urbancomputingass1",
+    storageBucket: "urbancomputingass1.appspot.com",
+    messagingSenderId: "292189164311",
+    appId: "1:292189164311:web:632c3585878f83048d9d52",
+    measurementId: "G-63SY7PNRT7"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+</script>  -->
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyA7Pc-B7G4D4f_-eO23g_2hEZBP7w_F6iY",
+    authDomain: "cs7ns6-iot-autimeter.firebaseapp.com",
+    databaseURL: "https://cs7ns6-iot-autimeter.firebaseio.com",
+    projectId: "cs7ns6-iot-autimeter",
+    storageBucket: "cs7ns6-iot-autimeter.appspot.com",
+    messagingSenderId: "72211288136",
+    appId: "1:72211288136:web:fe9cf31f8f269aecd8487d",
+    measurementId: "G-FRH8CB0L8W"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+</script>
+
+<!--<script src="js/weather.js"></script> -->
+
+<script src="jquery-3.3.1.min.js"></script>
+
+<script type="text/javascript">
+
+
+// jQuery convention for running when the document has been fully loaded:
+$(document).ready(() => {
+  const database = firebase.database();
+
+  const button = document.getElementById('update1');
+
+button.addEventListener('click', event => {
+  window.open("http://192.168.0.157");
+});
+	var myanim, myanim1, myanim2 ;
+  // use .on('value' to get notified in real-time whenever anyone
+  // on the internet updates your database. cool!
+  database.ref('/cs7ns2_esp32_sensors/').on('value', (snapshot) => {
+  	console.log("test");
+    var alldata = snapshot.val();
+    console.log(alldata)
+    var keys = Object.keys(alldata);
+    console.log('keys', alldata);
+    console.log(keys.length);
+    
+
+    	var a1 =keys[keys.length - 1];
+    	var alerts = alldata[a1]["alert"];
+    	var dt = alldata[a1]["dt"];
+    	var heart_rate = alldata[a1]["heartrate"];
+    	var temperature = alldata[a1]["temperature"];
+
+    	 var ab = document.getElementById("heart"); 
+    		 ab.setAttribute("color", "#ff0000");
+    		 ab.innerHTML = heart_rate;
+
+    		var ab1 = document.getElementById("Body1"); 
+    		 ab1.setAttribute("color", "#ff0000");
+    		ab1.innerHTML = temperature;
+
+
+    		if(myanim != null){
+    			var ab2 = document.getElementById("warn"); 
+    		  ab2.setAttribute("color", "#ffffff");
+    			ab2.removeChild(myanim);
+
+    		var ab3 = document.getElementById("a1"); 
+    		 ab3.setAttribute("fill", "#000000");
+    		//ab2.innerHTML = "12";
+    		ab3.removeChild(myanim1);
+
+			var ab4 = document.getElementById("b1"); 
+    		 //ab4.setAttribute("fill", "#ff0000");
+    		 ab4.removeChild(myanim2);
+    		}
+    		
+    		
+
+
+    	if(heart_rate > 80 || temperature > 99){
+    		console.log("abc");
+
+    		
+    		var ab2 = document.getElementById("warn"); 
+    		 ab2.setAttribute("color", "#ff0000");
+    		//ab2.innerHTML = "12";
+
+    		var ab3 = document.getElementById("a1"); 
+    		 ab3.setAttribute("fill", "#ff0000");
+    		//ab2.innerHTML = "12";
+
+			var ab4 = document.getElementById("b1"); 
+    		 //ab4.setAttribute("fill", "#ff0000");
+    		//ab2.innerHTML = "12";
+
+
+
+ 					 myanim=document.createElementNS("http://www.w3.org/2000/svg", 'animate');
+					//myanim.setAttribute("id","myAnimation"); 
+					myanim.setAttribute("attributeType","XML"); 
+					myanim.setAttribute("attributeName","fill"); 
+					myanim.setAttribute("values","#800;#f00;#800;#800"); 
+					myanim.setAttribute("dur","1.25s"); 
+					myanim.setAttribute("repeatCount","indefinite");
+
+					 myanim1=document.createElementNS("http://www.w3.org/2000/svg", 'animate');
+					//myanim.setAttribute("id","myAnimation"); 
+					myanim1.setAttribute("attributeType","XML"); 
+					myanim1.setAttribute("attributeName","fill"); 
+					myanim1.setAttribute("values","#800;#f00;#800;#800"); 
+					myanim1.setAttribute("dur","1.25s"); 
+					myanim1.setAttribute("repeatCount","indefinite");
+
+					myanim2=document.createElementNS("http://www.w3.org/2000/svg", 'animate');
+					//myanim.setAttribute("id","myAnimation"); 
+					myanim2.setAttribute("attributeType","XML"); 
+					myanim2.setAttribute("attributeName","fill"); 
+					myanim2.setAttribute("values","#800;#f00;#800;#800"); 
+					myanim2.setAttribute("dur","1.25s"); 
+					myanim2.setAttribute("repeatCount","indefinite");
+
+
+					ab2.appendChild(myanim)
+					ab3.appendChild(myanim1);
+					ab4.appendChild(myanim2);
+    			
+
+			
+    	//var list = createElement('li', indoor_temp +':' outdoor_temp);
+    	//li.parent('# of div');
+    }
+
+   
+    
+  });
+
+
+
+});
+ 
+</script>
+
+</head>
+<body>
+ 
+ 	<!-- navbar -->
+		<nav class="navbar">
+		  <a class="navbar-brand" href="#">
+		    <i class="fa fa-sun-o" aria-hidden="true"></i>
+		    <strong>Internet oF THings</strong> Group 6
+		  </a>
+		  <span id="date" class="lead">April 3, 2020</span>
+		</nav>
+
+
+		
+<div class="center">
+	<!--<object id="svg-object" type="image/svg+xml" data="Untitled Diagram (2).svg">  </object> -->
+
+<span id ="myid" class="text-danger"></span>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg
+	xmlns="http://www.w3.org/2000/svg"
+	xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="594px" height="392px" viewBox="-0.5 -0.5 594 392" content="&lt;mxfile host=&quot;app.diagrams.net&quot; modified=&quot;2020-04-02T18:43:23.867Z&quot; agent=&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36&quot; etag=&quot;oXxUKBuUcrzijD04eg0o&quot; version=&quot;12.9.2&quot; type=&quot;device&quot;&gt;&lt;diagram id=&quot;pXI-0vVlhH6D_zHhpGIv&quot; name=&quot;Page-1&quot;&gt;3ZjRbuI4FIafpRdcgmIngXBZaJkZaUc72u5q5q4y8SGxmtgZx7S0T7/HSQy4SdVWQ6vpcAHxb8ex/+/42GEULsvdJ82q/KviUIxowHej8GJE6Syh+G2F+1aIaNAKmRa8lY6EK/EArUicuhUc6k5rJaNUYUTli6mSElLjaUxrdec326iCe0LFMvCGYYWrlBXQa/ZdcJO3ahIftf4MIsvdk0nQ1ZTMNe6EOmdc3R1J4eUoXGqlTHtV7pZQWO98X1ZP1O4HpkGal9zwQNLqMot3lz+/MkV/XIhv2ZdxR+eWFdtuwt1gzb1zAMdd2UtRNlYtclMWWCR4eQvaCPTqvBCZRM2o6kj9i62h+KZqYYSytWtljCqxQWErFiy9ybTaSr5UhdLNs8JN88EmzcPO66pFGqDCXGEjdsBdEyznxthYOLczp6uUSzoRGA0bITnoSYpPpCvODMMfq9f4WwkcSaZZWQoskci6Ng3GhCaTSmadJTgL2D3pNdkTxMgHVYLR99jE3UDiSdze1MU9jeZt+e4QRYR0Wu5FUCeyLnKzfe8HuHjR8X0F6/APZB09yzoDCZoVY7XZiBRQmCO61adWvf67Ua/j6JTww8BDnwQ98vOgD95pJ+ce/YHcybPcS+B2gGMySyz0KX59BqbN9T/MwEmXOvFoT0l/ndNkYJ078eS8kx7vZuIoXYGsEcNj+jh540NnHewUTQA9EAWl4NzevtBQiwe2brqyCCslpGlmFC9G8YXta2swPpp93XZ9Asup7zgh057lCRlw/K0Mn/cM/xfKCvOL2Wr48G6H/kYWEtpzezZ7R7fJK/JZucvsqXRSo4/1pAJVFTApmbwmPoGNKIqjFBU0H9Rro9UNuBqpJLwk9w2nzB7lU7ChPhwSRv2lQAfgzOlb0Yl7dP6rMDXjOghWQpd3bGBJNFuETfjDMOLZRTJk4CCdY6pKmqGNx+rdm4YL5l+k4CekMOkvERKEfQwReSMKtH/WWxYivUEJQxVfoXLLY73FgG2KCr+2DlNbudnDChS6s9fPhb1mkluEAIdXL7AKh1s8T9UfPumR6dxDGg0srCiK3zHt0aG0Ny2sq2u8yEwz8VawAe75P/25Va5i3DqFZ6mAxNXuUOl6+c60FDI7Oztz/eGA2y79x6B89OgPTjya+ad2OrDPJUPA3+p1jfYz6a/yxaXqsuFBdHmxFwd5e2p8IgQ+OO5w/ugFnbjV7K3w9+Q9fY73C+m9MC4a0I+QLxS//y2JH2/Z8WkiIH50ro36r+lD/N1p8xX8sXj4m6+pO/qvNLz8Hw==&lt;/diagram&gt;&lt;/mxfile&gt;" style="background-color: rgb(255, 255, 255);">
+	<defs/>
+	<g>
+		<image x="94" y="187.5" width="119" height="119" xlink:href="https://cdn2.iconfinder.com/data/icons/pittogrammi/142/60-128.png" preserveAspectRatio="none"/>
+		<image x="108.5" y="18.5" width="90" height="90" xlink:href="https://cdn4.iconfinder.com/data/icons/general-office/91/General_Office_54-128.png" preserveAspectRatio="none"/>
+		<image x="89.5" y="-0.5" width="128" height="128" xlink:href="https://cdn1.iconfinder.com/data/icons/medical-178/96/Heart_Rate-128.png" preserveAspectRatio="none"/>
+		<rect x="0" y="55" width="81" height="18" fill="none" stroke="none" pointer-events="all"/>
+		<g transform="translate(-0.5 -0.5)">
+			<switch>
+				<foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+					<div
+						xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 64px; margin-left: 41px;">
+						<div style="box-sizing: border-box; font-size: 0; text-align: center; ">
+							<div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: #000000; line-height: 1.2; pointer-events: all; white-space: nowrap; ">Heart Sensor</div>
+						</div>
+					</div>
+				</foreignObject>
+				<text x="41" y="68" fill="#000000" font-family="Helvetica" font-size="12px" text-anchor="middle">Heart Sensor</text>
+			</switch>
+		</g>
+		<rect x="14" y="251" width="77" height="18" fill="none" stroke="none" pointer-events="all"/>
+		<g transform="translate(-0.5 -0.5)">
+			<switch>
+				<foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+					<div
+						xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 260px; margin-left: 53px;">
+						<div style="box-sizing: border-box; font-size: 0; text-align: center; ">
+							<div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: #000000; line-height: 1.2; pointer-events: all; white-space: nowrap; ">Temperature</div>
+						</div>
+					</div>
+				</foreignObject>
+				<text x="53" y="264" fill="#000000" font-family="Helvetica" font-size="12px" text-anchor="middle">Temperature</text>
+			</switch>
+		</g>
+		<ellipse Id="a1"cx="343.9" cy="88.85" rx="17.977431488447074" ry="15.847865668622294" fill="#000000" stroke="none" pointer-events="all"/>
+		<path Id = "b1" d="M 322.66 256.22 C 322.66 261.06 327.18 265 332.73 265 C 338.3 265 342.82 261.08 342.82 256.22 L 342.82 182.63 L 347.31 182.63 L 347.29 256.22 C 347.29 261.06 351.81 265 357.36 265 C 362.91 265 367.43 261.08 367.43 256.22 L 367.47 129.34 L 371.9 129.34 L 371.9 176.11 C 371.9 185.51 386 185.51 385.96 176.11 L 385.96 128.35 C 385.96 117.96 378.95 107.78 364.98 107.78 L 324.69 107.74 C 311.95 107.74 304 116.78 304 128.06 L 304 176.11 C 304 185.45 318.17 185.45 318.17 176.11 L 318.17 129.34 L 322.68 129.34 L 322.66 256.22 Z" fill="#000000" stroke="none" pointer-events="all"/>
+		<rect x="300" y="321" width="103" height="41" rx="6.15" ry="6.15" fill="#0057d8" stroke="none" pointer-events="all"/>
+		<g transform="translate(-0.5 -0.5)">
+			<switch>
+				<foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+					<div
+						xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 342px; margin-left: 352px;">
+						<div style="box-sizing: border-box; font-size: 0; text-align: center; ">
+							<div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: #ffffff; line-height: 1.2; pointer-events: all; white-space: nowrap; " Id = "update1">Update Firmware</div>
+						</div>
+					</div>
+				</foreignObject>
+				<text x="352" y="345" fill="#ffffff" font-family="Helvetica" font-size="12px" text-anchor="middle">Update Firmware</text>
+			</switch>
+		</g>
+		<rect x="148" y="373" width="445" height="18" fill="none" stroke="none" pointer-events="all"/>
+		<g transform="translate(-0.5 -0.5)">
+			<switch>
+				<foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+					<div
+						xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 382px; margin-left: 371px;">
+						<div style="box-sizing: border-box; font-size: 0; text-align: center; ">
+							<div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: #000000; line-height: 1.2; pointer-events: all; white-space: nowrap; ">Click on the button to update the firmware over the Air and see connected devices</div>
+						</div>
+					</div>
+				</foreignObject>
+				<text x="371" y="386" fill="#000000" font-family="Helvetica" font-size="12px" text-anchor="middle">Click on the button to update the firmware over the Air and see connected...</text>
+			</switch>
+		</g>
+		<rect x="449" y="151" width="85" height="19" fill="none" stroke="none" pointer-events="all"/>
+		<g transform="translate(-0.5 -0.5)">
+			<switch>
+				<foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+					<div
+						xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 161px; margin-left: 492px;">
+						<div style="box-sizing: border-box; font-size: 0; text-align: center; ">
+							<div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: #000000; line-height: 1.2; pointer-events: all; white-space: nowrap; ">
+								<b>
+									<font style="font-size: 15px" color = "#FFFFF" Id = "warn">Warning!!!</font>
+								</b>
+							</div>
+						</div>
+					</div>
+				</foreignObject>
+				<text x="492" y="164" fill="#000000" font-family="Helvetica" font-size="12px" text-anchor="middle">Warning!!!</text>
+			</switch>
+		</g>
+		<rect x="18.5" y="84" width="44" height="19" fill="none" stroke="none" pointer-events="all"/>
+		<g transform="translate(-0.5 -0.5)">
+			<switch>
+				<foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+					<div
+						xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 94px; margin-left: 41px;">
+						<div style="box-sizing: border-box; font-size: 0; text-align: center; ">
+							<div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: #000000; line-height: 1.2; pointer-events: all; white-space: nowrap; ">
+								<font style="font-size: 15px" color="#ffffff" Id = "heart">heart</font>
+							</div>
+						</div>
+					</div>
+				</foreignObject>
+				<text x="41" y="97" fill="#000000" font-family="Helvetica" font-size="12px" text-anchor="middle">heart</text>
+			</switch>
+		</g>
+		<rect x="34" y="279" width="44" height="22" fill="none" stroke="none" pointer-events="all"/>
+		<g transform="translate(-0.5 -0.5)">
+			<switch>
+				<foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+					<div
+						xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 290px; margin-left: 56px;">
+						<div style="box-sizing: border-box; font-size: 0; text-align: center; ">
+							<div style="display: inline-block; font-size: 15px; font-family: Helvetica; color: #000000; line-height: 1.2; pointer-events: all; white-space: nowrap; ">
+								<font color="#ffffff" style="font-size: 15px" Id = "Body1">Body</font>
+							</div>
+						</div>
+					</div>
+				</foreignObject>
+				<text x="56" y="295" fill="#000000" font-family="Helvetica" font-size="15px" text-anchor="middle">Body</text>
+			</switch>
+		</g>
+	</g>
+	<switch>
+		<g requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"/>
+		<a transform="translate(0,-5)" xlink:href="https://desk.draw.io/support/solutions/articles/16000042487" target="_blank">
+			<text text-anchor="middle" font-size="10px" x="50%" y="100%">Viewer does not support full SVG 1.1</text>
+		</a>
+	</switch>
+</svg>
+
+</div>>
+		
+		
+
+</body>
+</html>
