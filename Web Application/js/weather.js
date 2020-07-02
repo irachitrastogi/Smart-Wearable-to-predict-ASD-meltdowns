@@ -1,9 +1,4 @@
-/* 
- Weather App Javascript code
- author: George Louis
- date:   3/11/2018
- purpose: get local weather
-*/
+
 window.onload = function() {
 	//variables
 	var ipUrl = "https://ipinfo.io/json";				
